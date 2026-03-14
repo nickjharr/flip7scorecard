@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Player } from '$lib/types';
   import { setScore } from '$lib/game.svelte';
+  import CardCalculator from './CardCalculator.svelte';
 
   let {
     player,
@@ -12,6 +13,7 @@
 
   // Pre-populate with existing score if present
   let inputValue = $state(currentRoundScore !== null ? String(currentRoundScore) : '');
+  let calculatorOpen = $state(false);
 
   function handleSave() {
     const parsed = parseInt(inputValue, 10);
@@ -38,6 +40,14 @@
   />
 
   <button
+    onclick={() => (calculatorOpen = true)}
+    class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm transition-colors"
+    aria-label="Open card calculator"
+  >
+    🃏
+  </button>
+
+  <button
     onclick={handleBust}
     class="px-3 py-2 rounded-lg bg-red-900 hover:bg-red-800 text-sm font-medium transition-colors"
   >
@@ -52,6 +62,19 @@
     ✓ Save
   </button>
 </div>
+
+{#if calculatorOpen}
+  <CardCalculator
+    onApply={(total) => {
+      inputValue = String(total);
+      calculatorOpen = false;
+    }}
+    onBust={() => {
+      handleBust();
+      calculatorOpen = false;
+    }}
+  />
+{/if}
 
 <style>
   input[type='number']::-webkit-inner-spin-button,

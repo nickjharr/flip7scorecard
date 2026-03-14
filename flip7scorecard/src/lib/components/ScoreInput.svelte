@@ -45,7 +45,7 @@
 
   <button
     onclick={handleSave}
-    disabled={!inputValue.trim() || isNaN(parseInt(inputValue, 10))}
+    disabled={!String(inputValue).trim() || isNaN(parseInt(String(inputValue), 10))}
     class="px-3 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-sm font-medium transition-colors"
   >
     ✓ Save

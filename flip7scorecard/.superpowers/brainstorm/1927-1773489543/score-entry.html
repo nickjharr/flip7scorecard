@@ -1,0 +1,72 @@
+<h2>Score Entry</h2>
+<p class="subtitle">When you tap a player to add their round score, what happens?</p>
+
+<div class="cards">
+
+  <!-- Option A: Bottom sheet -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:0;font-family:monospace;font-size:11px;position:relative;overflow:hidden;min-height:160px">
+      <!-- Dimmed background list -->
+      <div style="padding:10px;opacity:0.35">
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#2a2a4a;padding:6px 8px;border-radius:6px;margin-bottom:3px">
+          <div><div style="color:#e0e0e0;font-size:11px;font-weight:bold">Alice</div><div style="color:#666;font-size:9px"><span style="text-decoration:line-through">23</span></div></div>
+          <div style="color:#f0c040;font-size:14px;font-weight:bold">23</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#2a2a4a;padding:6px 8px;border-radius:6px;margin-bottom:3px">
+          <div><div style="color:#e0e0e0;font-size:11px;font-weight:bold">Carol</div><div style="color:#666;font-size:9px">—</div></div>
+          <div style="color:#f0c040;font-size:14px;font-weight:bold">0</div>
+        </div>
+      </div>
+      <!-- Bottom sheet -->
+      <div style="position:absolute;bottom:0;left:0;right:0;background:#252540;border-radius:10px 10px 0 0;padding:10px 12px;border-top:1px solid #3a3a6a">
+        <div style="color:#e0e0e0;font-size:11px;margin-bottom:6px;font-weight:bold">Bob — add score</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <div style="background:#1a1a35;border:1px solid #4a4a8a;border-radius:4px;padding:4px 8px;color:#f0c040;font-size:16px;min-width:48px;text-align:center">18</div>
+          <div style="display:flex;gap:3px">
+            <div style="background:#333;border-radius:4px;padding:4px 8px;color:#aaa;font-size:10px">Bust</div>
+            <div style="background:#2a4a8a;border-radius:4px;padding:4px 8px;color:#aaa;font-size:10px">🃏 Calc</div>
+          </div>
+          <div style="background:#4a8a4a;border-radius:4px;padding:4px 10px;color:#fff;font-size:10px;margin-left:auto">Save</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Bottom Sheet</h3>
+      <p>Tapping a player slides up a sheet from the bottom. Main list dims behind it. Includes number input, Bust button, optional card calculator button.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Inline expand -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:10px;font-family:monospace;font-size:11px">
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#2a2a4a;padding:6px 8px;border-radius:6px;margin-bottom:3px">
+        <div><div style="color:#e0e0e0;font-size:11px;font-weight:bold">Alice</div><div style="color:#666;font-size:9px"><span style="text-decoration:line-through">23</span></div></div>
+        <div style="color:#f0c040;font-size:14px;font-weight:bold">23</div>
+      </div>
+      <!-- Expanded player -->
+      <div style="background:#252550;border-radius:6px;margin-bottom:3px;overflow:hidden;border:1px solid #4a4a8a">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px">
+          <div><div style="color:#e0e0e0;font-size:11px;font-weight:bold">Bob ▾</div><div style="color:#666;font-size:9px">—</div></div>
+          <div style="color:#f0c040;font-size:14px;font-weight:bold">0</div>
+        </div>
+        <div style="padding:4px 8px 8px;border-top:1px solid #333">
+          <div style="display:flex;gap:4px;align-items:center">
+            <div style="background:#1a1a35;border:1px solid #4a4a8a;border-radius:4px;padding:3px 6px;color:#f0c040;font-size:14px;min-width:40px;text-align:center">_</div>
+            <div style="background:#333;border-radius:4px;padding:3px 7px;color:#aaa;font-size:9px">Bust</div>
+            <div style="background:#2a4a8a;border-radius:4px;padding:3px 7px;color:#aaa;font-size:9px">🃏</div>
+            <div style="background:#4a8a4a;border-radius:4px;padding:3px 7px;color:#fff;font-size:9px;margin-left:auto">✓</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#2a2a4a;padding:6px 8px;border-radius:6px">
+        <div><div style="color:#e0e0e0;font-size:11px;font-weight:bold">Carol</div><div style="color:#666;font-size:9px">—</div></div>
+        <div style="color:#f0c040;font-size:14px;font-weight:bold">0</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Inline Expand</h3>
+      <p>Tapping a player expands them in-place, revealing the score input. The list stays visible above and below. One player expanded at a time.</p>
+    </div>
+  </div>
+
+</div>

@@ -33,6 +33,14 @@
   // Score for the current round
   const currentRoundScore = $derived(scores[currentRound] ?? null);
 
+  const rowGlowStyle = $derived(
+    currentRoundScore === null
+      ? ''
+      : currentRoundScore > 0
+        ? 'box-shadow: 0 0 0 2px #16a34a, 0 0 12px rgba(22,163,74,0.4); background: #1a2e22'
+        : 'box-shadow: 0 0 0 2px #dc2626, 0 0 12px rgba(220,38,38,0.4); background: #2a1a1a'
+  );
+
   function handleLongPress() {
     showActions = true;
   }
@@ -56,7 +64,7 @@
 </script>
 
 <!-- Row container -->
-<div class="border-b border-gray-800 last:border-0">
+<div class="border-b border-gray-800 last:border-0 rounded-lg transition-all duration-300" style={rowGlowStyle}>
 
   <!-- Main row (tap to expand) -->
   <button
@@ -110,7 +118,7 @@
   <!-- Expanded: inline score input -->
   {#if isExpanded}
     <div class="pb-3">
-      <ScoreInput {player} {currentRoundScore} />
+      <ScoreInput {player} {currentRoundScore} onSave={onExpand} />
     </div>
   {/if}
 

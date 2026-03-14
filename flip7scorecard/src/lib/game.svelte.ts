@@ -71,6 +71,14 @@ export function setScore(playerId: string, score: number): void {
 }
 
 export function endRound(): void {
+  // Fill any missing scores with 0 before advancing
+  for (const player of game.players) {
+    const playerScores = game.scores[player.id];
+    if (!playerScores) continue;
+    if ((playerScores[game.currentRound] ?? null) === null) {
+      setScore(player.id, 0);
+    }
+  }
   game.currentRound += 1;
   persist();
 }

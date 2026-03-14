@@ -4,9 +4,11 @@
   let {
     onApply,
     onBust,
+    onDismiss,
   }: {
     onApply: (total: number) => void;
     onBust: () => void;
+    onDismiss: () => void;
   } = $props();
 
   // --- Selection state (resets each time modal mounts) ---
@@ -58,20 +60,27 @@
   });
 </script>
 
-<!-- Fixed overlay backdrop (no close-on-click — Apply/Bust are the only exits) -->
-<div class="fixed inset-0 z-40 bg-black/50"></div>
+<!-- Fixed overlay backdrop — tap outside to dismiss -->
+<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
 
 <!-- Bottom sheet panel -->
-<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5">
-  <!-- Drag handle (decorative) -->
+<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5" role="dialog" aria-modal="true" aria-labelledby="card-calculator-title">
+  <!-- Drag handle — tap to dismiss -->
   <div class="flex justify-center mb-4">
-    <div class="w-8 h-1 rounded-full bg-gray-600"></div>
+    <button
+      type="button"
+      onclick={onDismiss}
+      aria-label="Dismiss calculator"
+      class="cursor-pointer p-2 -m-2"
+    >
+      <div class="w-8 h-1 rounded-full bg-gray-600" aria-hidden="true"></div>
+    </button>
   </div>
 
   <!-- Header: title + Bust -->
   <div class="flex items-start justify-between mb-4">
     <div>
-      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Card Calculator</p>
+      <p id="card-calculator-title" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Card Calculator</p>
       <p class="text-3xl font-bold text-amber-400 leading-none">{total}</p>
       {#if breakdown}
         <p class="text-xs text-gray-500 mt-0.5">{breakdown}</p>

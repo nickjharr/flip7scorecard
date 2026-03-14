@@ -77,9 +77,7 @@
       handleBust();
       calculatorOpen = false;
     }}
-    onDismiss={() => {
-      calculatorOpen = false;
-    }}
+    onDismiss={() => (calculatorOpen = false)}
   />
 {/if}
 

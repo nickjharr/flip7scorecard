@@ -34,6 +34,14 @@
   // --- Derived total ---
   let total = $derived(calcCardTotal(selectedNumbers, selectedModifiers, x2Selected));
 
+  // --- Keyboard handler for backdrop ---
+  function handleBackdropKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onDismiss();
+    }
+  }
+
   // --- Formula breakdown string ---
   // Formula mirrors calcCardTotal — keep in sync if scoring rules change.
   let breakdown = $derived.by(() => {
@@ -61,10 +69,10 @@
 </script>
 
 <!-- Fixed overlay backdrop — tap outside to dismiss -->
-<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
+<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss} onkeydown={handleBackdropKeydown} role="button" tabindex="-1" aria-label="Close calculator"></div>
 
 <!-- Bottom sheet panel -->
-<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5">
+<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5" role="dialog" aria-modal="true">
   <!-- Drag handle — tap to dismiss -->
   <div class="flex justify-center mb-4">
     <button
@@ -73,7 +81,7 @@
       aria-label="Dismiss calculator"
       class="cursor-pointer p-2 -m-2"
     >
-      <div class="w-8 h-1 rounded-full bg-gray-600"></div>
+      <div class="w-8 h-1 rounded-full bg-gray-600" aria-hidden="true"></div>
     </button>
   </div>
 

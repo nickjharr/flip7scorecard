@@ -59,7 +59,7 @@
   <!-- Player list -->
   <main class="flex-1 overflow-y-auto px-4 py-2">
     {#if game.players.length === 0}
-      <p class="text-gray-500 text-sm text-center mt-8">Add players below to start tracking scores.</p>
+      <p class="text-gray-400 text-sm text-center mt-8">Add players below to start tracking scores.</p>
     {/if}
 
     {#each game.players as player (player.id)}
@@ -113,7 +113,7 @@
 <!-- New game confirmation dialog -->
 {#if showNewGameConfirm}
   <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-10 px-6">
-    <div class="bg-gray-900 rounded-2xl p-6 w-full max-w-sm">
+    <div class="bg-gray-900 rounded-2xl p-6 w-full max-w-sm text-white">
       <p class="text-center text-lg font-semibold mb-1">Start a new game?</p>
       <p class="text-center text-sm text-gray-400 mb-5">All scores will be cleared.</p>
       <div class="flex gap-3">
@@ -137,7 +137,7 @@
 <!-- Winner banner -->
 {#if winners}
   <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-20 px-6">
-    <div class="bg-gray-900 rounded-2xl p-8 w-full max-w-sm text-center">
+    <div class="bg-gray-900 rounded-2xl p-8 w-full max-w-sm text-center text-white">
       <div class="text-5xl mb-4">🎉</div>
       <p class="text-2xl font-bold mb-1">
         {winners.map((w) => w.name).join(' & ')}

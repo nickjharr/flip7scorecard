@@ -64,11 +64,11 @@
 </script>
 
 <!-- Row container -->
-<div class="border-b border-gray-800 last:border-0 rounded-lg transition-all duration-300" style={rowGlowStyle}>
+<div class="border-b border-gray-800 last:border-0 rounded-lg transition-all duration-300 mb-3" style={rowGlowStyle}>
 
   <!-- Main row (tap to expand) -->
   <button
-    class="w-full flex items-center gap-3 px-0 py-3 text-left"
+    class="w-full flex items-center gap-3 px-3 py-3 text-left"
     onclick={onExpand}
     oncontextmenu={(e) => { e.preventDefault(); handleLongPress(); }}
   >
@@ -117,7 +117,7 @@
 
   <!-- Expanded: inline score input -->
   {#if isExpanded}
-    <div class="pb-3">
+    <div class="px-3 pb-3">
       <ScoreInput {player} {currentRoundScore} onSave={onExpand} />
     </div>
   {/if}

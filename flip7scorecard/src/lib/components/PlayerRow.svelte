@@ -23,8 +23,12 @@
   let isRenaming = $state(false);
   let renameValue = $state(player.name);
 
-  // Previous rounds only (not the current round)
-  const previousRounds = $derived(scores.slice(0, currentRound));
+  // Cumulative totals at the end of each previous round
+  const cumulativeHistory = $derived(
+    scores.slice(0, currentRound).map((_, i) =>
+      scores.slice(0, i + 1).reduce<number>((sum, s) => sum + (s ?? 0), 0)
+    )
+  );
 
   // Score for the current round
   const currentRoundScore = $derived(scores[currentRound] ?? null);
@@ -77,12 +81,12 @@
         <span class="text-sm font-medium">{player.name}</span>
       {/if}
 
-      <!-- Score history: previous rounds with strikethrough -->
-      {#if previousRounds.length > 0}
+      <!-- Score history: cumulative total at end of each previous round -->
+      {#if cumulativeHistory.length > 0}
         <div class="flex flex-wrap gap-1.5 mt-0.5">
-          {#each previousRounds as score, i (i)}
+          {#each cumulativeHistory as total, i (i)}
             <span class="text-xs text-gray-500 line-through">
-              {score !== null ? score : '--'}
+              {total}
             </span>
           {/each}
         </div>

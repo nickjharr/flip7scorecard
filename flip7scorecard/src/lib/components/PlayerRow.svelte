@@ -85,7 +85,7 @@
       {#if cumulativeHistory.length > 0}
         <div class="flex flex-wrap gap-1.5 mt-0.5">
           {#each cumulativeHistory as total, i (i)}
-            <span class="text-xs text-gray-500 line-through">
+            <span class="text-xs text-gray-400 line-through">
               {total}
             </span>
           {/each}
@@ -94,7 +94,7 @@
     </div>
 
     <!-- Current round pending indicator -->
-    <span class="text-xs text-gray-500 w-5 text-center">
+    <span class="text-xs text-gray-400 w-5 text-center">
       {currentRoundScore !== null ? '' : '--'}
     </span>
 
@@ -104,7 +104,7 @@
     </span>
 
     <!-- Expand chevron -->
-    <span class="text-gray-500 text-xs ml-1">{isExpanded ? '▲' : '▼'}</span>
+    <span class="text-gray-400 text-xs ml-1">{isExpanded ? '▲' : '▼'}</span>
   </button>
 
   <!-- Expanded: inline score input -->

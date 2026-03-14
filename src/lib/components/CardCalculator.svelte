@@ -34,14 +34,6 @@
   // --- Derived total ---
   let total = $derived(calcCardTotal(selectedNumbers, selectedModifiers, x2Selected));
 
-  // --- Keyboard handler for backdrop ---
-  function handleBackdropKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onDismiss();
-    }
-  }
-
   // --- Formula breakdown string ---
   // Formula mirrors calcCardTotal — keep in sync if scoring rules change.
   let breakdown = $derived.by(() => {
@@ -69,10 +61,10 @@
 </script>
 
 <!-- Fixed overlay backdrop — tap outside to dismiss -->
-<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss} onkeydown={handleBackdropKeydown} role="button" tabindex="-1" aria-label="Close calculator"></div>
+<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
 
 <!-- Bottom sheet panel -->
-<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5" role="dialog" aria-modal="true">
+<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5" role="dialog" aria-modal="true" aria-labelledby="card-calculator-title">
   <!-- Drag handle — tap to dismiss -->
   <div class="flex justify-center mb-4">
     <button
@@ -88,7 +80,7 @@
   <!-- Header: title + Bust -->
   <div class="flex items-start justify-between mb-4">
     <div>
-      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Card Calculator</p>
+      <p id="card-calculator-title" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Card Calculator</p>
       <p class="text-3xl font-bold text-amber-400 leading-none">{total}</p>
       {#if breakdown}
         <p class="text-xs text-gray-500 mt-0.5">{breakdown}</p>

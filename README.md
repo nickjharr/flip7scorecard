@@ -1,42 +1,83 @@
-# sv
+# Flip 7 Scorecard
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A mobile-first web app for tracking scores in the card game [Flip 7](https://www.amazon.com/dp/B0D7L1BKZK). Open it on your phone, add players, and start keeping score — no pen, no paper, no accounts.
 
-## Creating a project
+**Live app:** https://nickjharr.github.io/flip7scorecard
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
+
+## Features
+
+- Add and remove players at any time during a game
+- Enter round scores in any order; edit them before ending the round
+- One-tap **Bust** button (scores 0 for the round)
+- **Card Calculator** — tap your cards to compute the round total automatically
+- Cumulative scores always visible; full round history per player
+- Winner banner when a player reaches 200+
+- Scores survive page refreshes via `localStorage`
+
+## Scoring rules
+
+| Element | Rule |
+|---------|------|
+| Number cards | Sum of all number cards (0–12) |
+| ×2 modifier | Doubles the number card total if held |
+| Flat bonuses | +2 / +4 / +6 / +8 / +10 added after multiplier |
+| Bust | Round score = 0 |
+| Win | First player to **200+ cumulative points** |
+
+---
+
+## Development
+
+### Stack
+
+- **SvelteKit 2** + **Svelte 5 runes**
+- **TypeScript** (strict)
+- **Tailwind CSS v4**
+- **Vitest**
+- Deployed as a static site via `adapter-static` and GitHub Pages
+
+### Getting started
 
 ```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.12.7 create --template minimal --types ts --add tailwindcss="plugins:none" eslint --install npm flip7scorecard
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
+### Commands
 
 ```sh
-npm run build
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run preview      # Preview production build locally
+npm run check        # Svelte type check
+npm run lint         # ESLint
+npm run test         # Run tests once
+npm run test:watch   # Tests in watch mode
 ```
 
-You can preview the production build with `npm run preview`.
+Run a single test file:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+npx vitest run src/lib/gameLogic.test.ts
+```
+
+### Project structure
+
+| File | Role |
+|------|------|
+| `src/lib/types.ts` | `Player` and `GameState` interfaces |
+| `src/lib/gameLogic.ts` | Pure scoring functions (`totalScore`, `getWinners`, `calcCardTotal`) |
+| `src/lib/gameLogic.test.ts` | Unit tests for all game logic |
+| `src/lib/game.svelte.ts` | Svelte 5 `$state` store, mutations, and localStorage persistence |
+| `src/routes/+page.svelte` | App shell — player list, header, footer |
+| `src/lib/components/PlayerRow.svelte` | Single player row with collapsible score input |
+| `src/lib/components/ScoreInput.svelte` | Inline score entry (number input, Bust/Save, calculator trigger) |
+| `src/lib/components/CardCalculator.svelte` | Modal: tap cards to build a hand and calculate the round score |
+
+---
+
+## Deployment
+
+Pushes to `master` automatically build and deploy to GitHub Pages via the workflow in `.github/workflows/`.

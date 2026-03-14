@@ -30,3 +30,17 @@ export function getWinners(state: GameState): Player[] | null {
 export function createEmptyGame(): GameState {
   return { players: [], scores: {}, currentRound: 0 };
 }
+
+/**
+ * Calculates the score for a hand of Flip 7 cards.
+ * X2 multiplier applies only to the number card total, not modifiers.
+ */
+export function calcCardTotal(
+  numbers: number[],   // selected number card values (0–12)
+  modifiers: number[], // selected modifier card values (+2/+4/+6/+8/+10)
+  x2: boolean          // whether the X2 multiplier card is held
+): number {
+  const numSum = numbers.reduce((a, b) => a + b, 0);
+  const modSum = modifiers.reduce((a, b) => a + b, 0);
+  return numSum * (x2 ? 2 : 1) + modSum;
+}

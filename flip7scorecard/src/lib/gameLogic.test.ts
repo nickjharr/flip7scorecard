@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { totalScore, getWinners, createEmptyGame } from './gameLogic';
+import { totalScore, getWinners, createEmptyGame, calcCardTotal } from './gameLogic';
 import type { GameState } from './types';
 
 describe('totalScore', () => {
@@ -111,5 +111,31 @@ describe('createEmptyGame', () => {
     expect(game.players).toEqual([]);
     expect(game.scores).toEqual({});
     expect(game.currentRound).toBe(0);
+  });
+});
+
+describe('calcCardTotal', () => {
+  it('returns 0 when nothing is selected', () => {
+    expect(calcCardTotal([], [], false)).toBe(0);
+  });
+
+  it('sums number cards correctly', () => {
+    expect(calcCardTotal([3, 7, 2], [], false)).toBe(12);
+  });
+
+  it('sums modifier cards correctly', () => {
+    expect(calcCardTotal([], [4, 6], false)).toBe(10);
+  });
+
+  it('applies X2 to number total only, not modifiers', () => {
+    expect(calcCardTotal([5], [4], true)).toBe(14); // (5 × 2) + 4
+  });
+
+  it('X2 with no number cards returns only modifier sum', () => {
+    expect(calcCardTotal([], [8], true)).toBe(8); // (0 × 2) + 8 = 8
+  });
+
+  it('combines numbers, X2, and modifiers correctly', () => {
+    expect(calcCardTotal([3, 7], [2, 4], true)).toBe(26); // (10 × 2) + 6
   });
 });

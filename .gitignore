@@ -25,5 +25,8 @@ vite.config.ts.timestamp-*
 # Superpowers
 .superpowers/
 
+# Claude local settings
+.claude/settings.local.json
+
 # Worktrees
 .worktrees

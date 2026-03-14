@@ -77,7 +77,7 @@
   </main>
 
   <!-- Footer controls -->
-  <footer class="px-4 py-3 border-t border-gray-800 flex flex-col gap-2">
+  <footer class="px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-gray-800 flex flex-col gap-2">
     {#if game.players.length < 12}
       <form
         onsubmit={(e) => { e.preventDefault(); handleAddPlayer(); }}
@@ -88,7 +88,7 @@
           placeholder="Player name"
           bind:value={newPlayerName}
           maxlength={20}
-          class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+          class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-base focus:outline-none focus:border-blue-500"
         />
         <button
           type="submit"

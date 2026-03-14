@@ -82,7 +82,7 @@
           onclick={(e) => e.stopPropagation()}
           onblur={submitRename}
           onkeydown={(e) => { if (e.key === 'Enter') submitRename(); }}
-          class="bg-gray-800 border border-blue-500 rounded px-2 py-0.5 text-sm w-full focus:outline-none"
+          class="bg-gray-800 border border-blue-500 rounded px-2 py-0.5 text-base w-full focus:outline-none"
           autofocus
         />
       {:else}

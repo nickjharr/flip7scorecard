@@ -33,6 +33,7 @@
     min="0"
     placeholder="Score"
     bind:value={inputValue}
+    onfocus={(e) => (e.target as HTMLInputElement).select()}
     class="w-24 bg-gray-800 border border-gray-600 focus:border-blue-500 rounded-lg px-3 py-2 text-sm text-center tabular-nums focus:outline-none"
   />
 

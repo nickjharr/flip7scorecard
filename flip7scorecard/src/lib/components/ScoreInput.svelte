@@ -6,9 +6,11 @@
   let {
     player,
     currentRoundScore,
+    onSave = () => {},
   }: {
     player: Player;
     currentRoundScore: number | null;
+    onSave?: () => void;
   } = $props();
 
   // Pre-populate with existing score if present
@@ -19,12 +21,14 @@
     const parsed = parseInt(inputValue, 10);
     if (!isNaN(parsed) && parsed >= 0) {
       setScore(player.id, parsed);
+      onSave();
     }
   }
 
   function handleBust() {
     inputValue = '0';
     setScore(player.id, 0);
+    onSave();
   }
 </script>
 

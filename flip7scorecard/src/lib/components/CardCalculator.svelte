@@ -33,7 +33,8 @@
   let total = $derived(calcCardTotal(selectedNumbers, selectedModifiers, x2Selected));
 
   // --- Formula breakdown string ---
-  let breakdown = $derived((() => {
+  // Formula mirrors calcCardTotal — keep in sync if scoring rules change.
+  let breakdown = $derived.by(() => {
     const numSum = selectedNumbers.reduce((a, b) => a + b, 0);
     const modSum = selectedModifiers.reduce((a, b) => a + b, 0);
 
@@ -54,7 +55,7 @@
           : `+${modSum}`;
 
     return `${numberPart}${multiplierPart}${modifierPart}`;
-  })());
+  });
 </script>
 
 <!-- Fixed overlay backdrop (no close-on-click — Apply/Bust are the only exits) -->
@@ -77,6 +78,7 @@
       {/if}
     </div>
     <button
+      type="button"
       onclick={onBust}
       class="border border-red-600 text-red-400 text-xs font-semibold rounded-md px-3 py-1.5 hover:bg-red-950 transition-colors"
     >
@@ -89,6 +91,7 @@
   <div class="flex flex-wrap gap-2 mb-4">
     {#each NUMBER_CARDS as n}
       <button
+        type="button"
         onclick={() => toggleNumber(n)}
         class="rounded-full px-3 py-1.5 text-sm font-medium border transition-colors
           {selectedNumbers.includes(n)
@@ -105,6 +108,7 @@
   <div class="flex flex-wrap gap-2 mb-4">
     {#each MODIFIER_CARDS as m}
       <button
+        type="button"
         onclick={() => toggleModifier(m)}
         class="rounded-full px-3 py-1.5 text-sm font-medium border transition-colors
           {selectedModifiers.includes(m)
@@ -119,6 +123,7 @@
   <!-- X2 multiplier -->
   <div class="flex items-center gap-3 mb-5">
     <button
+      type="button"
       onclick={() => (x2Selected = !x2Selected)}
       class="rounded-full px-4 py-1.5 text-sm font-bold border transition-colors
         {x2Selected
@@ -132,6 +137,7 @@
 
   <!-- Apply button -->
   <button
+    type="button"
     onclick={() => onApply(total)}
     class="w-full rounded-xl bg-amber-400 text-gray-900 font-bold py-3 text-base hover:bg-amber-300 transition-colors"
   >

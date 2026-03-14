@@ -4,9 +4,11 @@
   let {
     onApply,
     onBust,
+    onDismiss,
   }: {
     onApply: (total: number) => void;
     onBust: () => void;
+    onDismiss: () => void;
   } = $props();
 
   // --- Selection state (resets each time modal mounts) ---
@@ -58,14 +60,21 @@
   });
 </script>
 
-<!-- Fixed overlay backdrop (no close-on-click — Apply/Bust are the only exits) -->
-<div class="fixed inset-0 z-40 bg-black/50"></div>
+<!-- Fixed overlay backdrop — tap outside to dismiss -->
+<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
 
 <!-- Bottom sheet panel -->
 <div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5">
-  <!-- Drag handle (decorative) -->
+  <!-- Drag handle — tap to dismiss -->
   <div class="flex justify-center mb-4">
-    <div class="w-8 h-1 rounded-full bg-gray-600"></div>
+    <button
+      type="button"
+      onclick={onDismiss}
+      aria-label="Dismiss calculator"
+      class="cursor-pointer p-2 -m-2"
+    >
+      <div class="w-8 h-1 rounded-full bg-gray-600"></div>
+    </button>
   </div>
 
   <!-- Header: title + Bust -->

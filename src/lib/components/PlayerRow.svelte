@@ -25,7 +25,7 @@
 
   // Cumulative totals at the end of each previous round
   const cumulativeHistory = $derived(
-    scores.slice(0, currentRound).map((_, i) =>
+    scores.slice(0, Math.max(0, currentRound - 1)).map((_, i) =>
       scores.slice(0, i + 1).reduce<number>((sum, s) => sum + (s ?? 0), 0)
     )
   );

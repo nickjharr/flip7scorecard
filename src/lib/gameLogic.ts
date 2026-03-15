@@ -1,5 +1,8 @@
 import type { GameState, Player } from './types';
 
+export const FLIP_7_CARD_COUNT = 7;
+export const FLIP_7_BONUS = 15;
+
 /** Sum of all non-null scores for a player. */
 export function totalScore(
   scores: Record<string, (number | null)[]>,

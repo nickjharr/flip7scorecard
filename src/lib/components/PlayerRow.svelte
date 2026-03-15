@@ -76,7 +76,6 @@
     <!-- Player name + history -->
     <div class="flex-1 min-w-0">
       {#if isRenaming}
-        <!-- svelte-ignore event_directive_deprecated -->
         <!-- svelte-ignore a11y_autofocus -->
         <input
           type="text"

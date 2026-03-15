@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { totalScore, getWinners, createEmptyGame, calcCardTotal } from './gameLogic';
+import { totalScore, getWinners, createEmptyGame, calcCardTotal, FLIP_7_CARD_COUNT, FLIP_7_BONUS } from './gameLogic';
 import type { GameState } from './types';
 
 describe('totalScore', () => {
@@ -111,6 +111,15 @@ describe('createEmptyGame', () => {
     expect(game.players).toEqual([]);
     expect(game.scores).toEqual({});
     expect(game.currentRound).toBe(0);
+  });
+});
+
+describe('Flip 7 constants', () => {
+  it('FLIP_7_CARD_COUNT is 7', () => {
+    expect(FLIP_7_CARD_COUNT).toBe(7);
+  });
+  it('FLIP_7_BONUS is 15', () => {
+    expect(FLIP_7_BONUS).toBe(15);
   });
 });
 

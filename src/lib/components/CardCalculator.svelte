@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { calcCardTotal } from '$lib/gameLogic';
+  import { calcCardTotal, FLIP_7_CARD_COUNT, FLIP_7_BONUS } from '$lib/gameLogic';
   import { fly, fade } from 'svelte/transition';
   import { cubicOut, cubicIn } from 'svelte/easing';
 
@@ -8,7 +8,7 @@
     onBust,
     onDismiss,
   }: {
-    onApply: (total: number) => void;
+    onApply: (total: number, isFlip7: boolean) => void;
     onBust: () => void;
     onDismiss: () => void;
   } = $props();
@@ -33,8 +33,11 @@
       : [...selectedModifiers, m];
   }
 
+  // --- Flip 7 detection ---
+  const isFlip7 = $derived(selectedNumbers.length === FLIP_7_CARD_COUNT);
+
   // --- Derived total ---
-  let total = $derived(calcCardTotal(selectedNumbers, selectedModifiers, x2Selected));
+  let total = $derived(calcCardTotal(selectedNumbers, selectedModifiers, x2Selected) + (isFlip7 ? FLIP_7_BONUS : 0));
 
   // --- Formula breakdown string ---
   // Formula mirrors calcCardTotal — keep in sync if scoring rules change.
@@ -58,7 +61,9 @@
           ? ` + ${modSum}`
           : `+${modSum}`;
 
-    return `${numberPart}${multiplierPart}${modifierPart}`;
+    const flip7Part = isFlip7 ? ` + ${FLIP_7_BONUS} (Flip 7!)` : '';
+
+    return `${numberPart}${multiplierPart}${modifierPart}${flip7Part}`;
   });
 </script>
 
@@ -102,14 +107,22 @@
     </button>
   </div>
 
+  <!-- Flip 7 badge -->
+  {#if isFlip7}
+    <div class="flex items-center gap-2 mb-3 px-3 py-2 bg-amber-400/10 border border-amber-400/40 rounded-xl">
+      <span class="text-amber-400 font-bold text-sm">🎴 Flip 7! +15 bonus applied</span>
+    </div>
+  {/if}
+
   <!-- Number cards -->
   <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Number Cards</p>
   <div class="flex flex-wrap gap-2 mb-4">
-    {#each NUMBER_CARDS as n}
+    {#each NUMBER_CARDS as n (n)}
       <button
         type="button"
         onclick={() => toggleNumber(n)}
-        class="rounded-full px-3 py-1.5 text-sm font-medium border transition-colors
+        disabled={isFlip7 && !selectedNumbers.includes(n)}
+        class="rounded-full px-3 py-1.5 text-sm font-medium border transition-colors disabled:opacity-30 disabled:cursor-not-allowed
           {selectedNumbers.includes(n)
             ? 'bg-amber-400 text-gray-900 border-amber-400'
             : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}"
@@ -122,7 +135,7 @@
   <!-- Modifier cards -->
   <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Modifier Cards</p>
   <div class="flex flex-wrap gap-2 mb-4">
-    {#each MODIFIER_CARDS as m}
+    {#each MODIFIER_CARDS as m (m)}
       <button
         type="button"
         onclick={() => toggleModifier(m)}
@@ -154,7 +167,7 @@
   <!-- Apply button -->
   <button
     type="button"
-    onclick={() => onApply(total)}
+    onclick={() => onApply(total, isFlip7)}
     class="w-full rounded-xl bg-amber-400 text-gray-900 font-bold py-3 text-base hover:bg-amber-300 transition-colors"
   >
     Apply {total}

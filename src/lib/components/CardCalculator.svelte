@@ -1,5 +1,7 @@
 <script lang="ts">
   import { calcCardTotal } from '$lib/gameLogic';
+  import { fly, fade } from 'svelte/transition';
+  import { cubicOut, cubicIn } from 'svelte/easing';
 
   let {
     onApply,
@@ -61,10 +63,15 @@
 </script>
 
 <!-- Fixed overlay backdrop — tap outside to dismiss -->
-<div class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
+<div transition:fade={{ duration: 250 }} class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
 
 <!-- Bottom sheet panel -->
-<div class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5" role="dialog" aria-modal="true" aria-labelledby="card-calculator-title">
+<div
+  in:fly={{ y: 600, duration: 320, easing: cubicOut }}
+  out:fly={{ y: 600, duration: 250, easing: cubicIn }}
+  class="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-gray-900 border-t border-gray-700 p-5"
+  role="dialog" aria-modal="true" aria-labelledby="card-calculator-title"
+>
   <!-- Drag handle — tap to dismiss -->
   <div class="flex justify-center mb-4">
     <button

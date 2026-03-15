@@ -2,6 +2,7 @@
   import type { Player } from '$lib/types';
   import { removePlayer, renamePlayer } from '$lib/game.svelte';
   import ScoreInput from './ScoreInput.svelte';
+  import { untrack } from 'svelte';
 
   let {
     player,
@@ -21,7 +22,7 @@
 
   let showActions = $state(false);
   let isRenaming = $state(false);
-  let renameValue = $state(player.name);
+  let renameValue = $state(untrack(() => player.name));
 
   // Cumulative totals at the end of each previous round
   const cumulativeHistory = $derived(
@@ -76,6 +77,7 @@
     <div class="flex-1 min-w-0">
       {#if isRenaming}
         <!-- svelte-ignore event_directive_deprecated -->
+        <!-- svelte-ignore a11y_autofocus -->
         <input
           type="text"
           bind:value={renameValue}
@@ -129,12 +131,16 @@
   <div
     class="fixed inset-0 bg-black/60 z-10 flex items-end"
     onclick={() => (showActions = false)}
+    onkeydown={(e) => e.key === 'Escape' && (showActions = false)}
     role="dialog"
     aria-modal="true"
+    tabindex="-1"
   >
     <div
       class="w-full bg-gray-900 rounded-t-2xl p-4"
+      role="none"
       onclick={(e) => e.stopPropagation()}
+      onkeydown={(e) => e.stopPropagation()}
     >
       <p class="text-center text-sm font-semibold text-gray-300 mb-3">{player.name}</p>
       <button

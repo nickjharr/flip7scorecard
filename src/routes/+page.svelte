@@ -59,7 +59,13 @@
   <!-- Player list -->
   <main class="flex-1 overflow-y-auto px-4 py-2">
     {#if game.players.length === 0}
-      <p class="text-gray-400 text-sm text-center mt-8">Add players below to start tracking scores.</p>
+      <div class="text-gray-400 text-sm text-center mt-8 space-y-1">
+        <p>Add players below to get started.</p>
+        <p>Tap a player to enter their score each round.</p>
+        <p>Use the card calculator to total up your hand.</p>
+        <p>Hit <strong class="text-gray-300">End Round</strong> when everyone has scored.</p>
+        <p class="text-gray-600 text-xs mt-3 italic">Remember the first rule: <em>always</em> freeze Aleks.</p>
+      </div>
     {/if}
 
     {#each game.players as player (player.id)}

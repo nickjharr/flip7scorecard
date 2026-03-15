@@ -44,7 +44,7 @@
   );
 </script>
 
-<div class="min-h-screen bg-gray-950 text-white flex flex-col max-w-lg mx-auto">
+<div class="h-dvh bg-gray-950 text-white flex flex-col max-w-lg mx-auto">
   <!-- Header -->
   <header class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
     <h1 class="text-xl font-bold tracking-tight">Flip 7</h1>

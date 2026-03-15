@@ -94,7 +94,7 @@
       <!-- Score history: cumulative total at end of each previous round -->
       {#if cumulativeHistory.length > 0}
         <div class="flex flex-nowrap overflow-x-auto mt-0.5">
-          {#each cumulativeHistory as total, i (i)}
+          {#each cumulativeHistory.slice(-9) as total, i (i)}
             <span class="w-9 shrink-0 text-xs text-gray-400 line-through text-center tabular-nums">
               {total}
             </span>

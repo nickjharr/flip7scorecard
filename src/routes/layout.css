@@ -2,4 +2,5 @@
 
 body {
   @apply bg-gray-950;
+  touch-action: manipulation;
 }

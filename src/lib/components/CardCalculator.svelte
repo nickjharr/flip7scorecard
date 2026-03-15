@@ -63,7 +63,7 @@
 </script>
 
 <!-- Fixed overlay backdrop — tap outside to dismiss -->
-<div transition:fade={{ duration: 250 }} class="fixed inset-0 z-40 bg-black/50" onclick={onDismiss}></div>
+<div transition:fade={{ duration: 250 }} class="fixed inset-0 z-40 bg-black/50" role="presentation" onclick={onDismiss} onkeydown={(e) => e.key === 'Escape' && onDismiss()}></div>
 
 <!-- Bottom sheet panel -->
 <div

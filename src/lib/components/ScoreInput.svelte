@@ -2,6 +2,7 @@
   import type { Player } from '$lib/types';
   import { setScore } from '$lib/game.svelte';
   import CardCalculator from './CardCalculator.svelte';
+  import { untrack } from 'svelte';
 
   let {
     player,
@@ -14,7 +15,7 @@
   } = $props();
 
   // Pre-populate with existing score if present
-  let inputValue = $state(currentRoundScore !== null ? String(currentRoundScore) : '');
+  let inputValue = $state(untrack(() => currentRoundScore !== null ? String(currentRoundScore) : ''));
   let calculatorOpen = $state(false);
 
   function handleSave() {

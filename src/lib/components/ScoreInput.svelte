@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Player } from '$lib/types';
-  import { setScore } from '$lib/game.svelte';
+  import { setScore, setFlip7Banner } from '$lib/game.svelte';
   import CardCalculator from './CardCalculator.svelte';
   import { untrack } from 'svelte';
 
@@ -17,13 +17,31 @@
   // Pre-populate with existing score if present
   let inputValue = $state(untrack(() => currentRoundScore !== null ? String(currentRoundScore) : ''));
   let calculatorOpen = $state(false);
+  let pendingFlip7Score = $state<number | null>(null);
+  let showFlip7Confirm = $state(false);
 
   function handleSave() {
     const parsed = parseInt(inputValue, 10);
-    if (!isNaN(parsed) && parsed >= 0) {
-      setScore(player.id, parsed);
-      onSave();
+    if (isNaN(parsed) || parsed < 0) return;
+    if (pendingFlip7Score !== null) {
+      showFlip7Confirm = true;
+      return;
     }
+    commitSave(parsed);
+  }
+
+  function commitSave(score: number) {
+    setScore(player.id, score);
+    onSave();
+  }
+
+  function confirmFlip7Save() {
+    if (pendingFlip7Score === null) return;
+    setScore(player.id, pendingFlip7Score);
+    setFlip7Banner(true);
+    pendingFlip7Score = null;
+    showFlip7Confirm = false;
+    onSave();
   }
 
   function handleBust() {
@@ -70,9 +88,10 @@
 
 {#if calculatorOpen}
   <CardCalculator
-    onApply={(total) => {
+    onApply={(total, isFlip7) => {
       inputValue = String(total);
       calculatorOpen = false;
+      pendingFlip7Score = isFlip7 ? total : null;
     }}
     onBust={() => {
       handleBust();
@@ -80,6 +99,31 @@
     }}
     onDismiss={() => (calculatorOpen = false)}
   />
+{/if}
+
+{#if showFlip7Confirm}
+  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-30 px-6">
+    <div class="bg-gray-900 rounded-2xl p-6 w-full max-w-sm text-white">
+      <p class="text-center text-lg font-semibold mb-1">🎴 Flip 7!</p>
+      <p class="text-center text-sm text-gray-400 mb-5">
+        Saving this score ends your turn for this round. Other players still need to enter their scores.
+      </p>
+      <div class="flex gap-3">
+        <button
+          onclick={() => { showFlip7Confirm = false; }}
+          class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm font-medium transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          onclick={confirmFlip7Save}
+          class="flex-1 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-gray-900 text-sm font-semibold transition-colors"
+        >
+          Save Score
+        </button>
+      </div>
+    </div>
+  </div>
 {/if}
 
 <style>

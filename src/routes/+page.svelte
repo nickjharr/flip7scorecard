@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { game, addPlayer, endRound, newGame, getWinners, totalScore } from '$lib/game.svelte';
+  import { game, addPlayer, endRound, newGame, getWinners, totalScore, flip7Banner } from '$lib/game.svelte';
   import PlayerRow from '$lib/components/PlayerRow.svelte';
 
   // Which player row is currently expanded (null = none)
@@ -55,6 +55,13 @@
       New Game
     </button>
   </header>
+
+  <!-- Flip 7 banner -->
+  {#if flip7Banner.active}
+    <div class="px-4 py-2 bg-amber-400/10 border-b border-amber-400/30 text-amber-300 text-xs text-center">
+      🎴 Someone flipped 7 — enter your scores and hit <strong>End Round</strong>
+    </div>
+  {/if}
 
   <!-- Player list -->
   <main class="flex-1 overflow-y-auto px-4 py-2">

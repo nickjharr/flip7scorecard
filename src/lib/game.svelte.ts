@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { createEmptyGame, totalScore, getWinners } from './gameLogic';
-import type { GameState, Player } from './types';
+import type { GameState } from './types';
 
 const STORAGE_KEY = 'flip7_game';
 
@@ -70,6 +70,13 @@ export function setScore(playerId: string, score: number): void {
   persist();
 }
 
+// Flip 7 banner — true when a player has flipped 7 this round
+export const flip7Banner = $state({ active: false });
+
+export function setFlip7Banner(val: boolean): void {
+  flip7Banner.active = val;
+}
+
 export function endRound(): void {
   // Fill any missing scores with 0 before advancing
   for (const player of game.players) {
@@ -79,6 +86,7 @@ export function endRound(): void {
       setScore(player.id, 0);
     }
   }
+  flip7Banner.active = false;
   game.currentRound += 1;
   persist();
 }
@@ -88,6 +96,7 @@ export function newGame(): void {
   game.players = empty.players;
   game.scores = empty.scores;
   game.currentRound = empty.currentRound;
+  flip7Banner.active = false;
   if (browser) {
     localStorage.removeItem(STORAGE_KEY);
   }

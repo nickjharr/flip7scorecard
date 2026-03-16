@@ -91,7 +91,12 @@
     onApply={(total, isFlip7) => {
       inputValue = String(total);
       calculatorOpen = false;
-      pendingFlip7Score = isFlip7 ? total : null;
+      if (isFlip7) {
+        pendingFlip7Score = total;
+        showFlip7Confirm = true;
+      } else {
+        commitSave(total);
+      }
     }}
     onBust={() => {
       handleBust();

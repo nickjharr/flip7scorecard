@@ -46,10 +46,10 @@
   }
 
   function handleNewGame() {
-    newGame();
     winners = null;
     showNewGameConfirm = false;
     expandedPlayerId = null;
+    newGame();
   }
 
   function handlePlayAgain() {

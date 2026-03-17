@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { game, addPlayer, endRound, newGame, getWinners, totalScore, flip7Banner } from '$lib/game.svelte';
+  import { game, addPlayer, endRound, newGame, playAgain, getWinners, totalScore, flip7Banner } from '$lib/game.svelte';
   import PlayerRow from '$lib/components/PlayerRow.svelte';
   import HelpModal from '$lib/components/HelpModal.svelte';
 
@@ -46,10 +46,17 @@
   }
 
   function handleNewGame() {
-    newGame();
     winners = null;
     showNewGameConfirm = false;
     expandedPlayerId = null;
+    newGame();
+  }
+
+  function handlePlayAgain() {
+    winners = null;
+    showNewGameConfirm = false;
+    expandedPlayerId = null;
+    playAgain();
   }
 
   // End Round is enabled when: ≥1 player exists AND ≥1 score entered this round
@@ -242,10 +249,10 @@
         {winners[0] ? totalScore(game.scores, winners[0].id) : 0} points
       </p>
       <button
-        onclick={handleNewGame}
+        onclick={handlePlayAgain}
         class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold transition-colors"
       >
-        New Game
+        Play Again
       </button>
     </div>
   </div>

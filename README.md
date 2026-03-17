@@ -2,7 +2,7 @@
 
 A mobile-first web app for tracking scores in the card game [Flip 7](https://www.amazon.com/dp/B0D7L1BKZK). Open it on your phone, add players, and start keeping score — no pen, no paper, no accounts.
 
-**Live app:** https://nickjharr.github.io/flip7scorecard
+**Live app:** https://flipping7.com
 
 ---
 

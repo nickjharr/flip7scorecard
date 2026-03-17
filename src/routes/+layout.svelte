@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>Flip 7</title>
+	<title>Flip 7 Scorecard</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 {@render children()}

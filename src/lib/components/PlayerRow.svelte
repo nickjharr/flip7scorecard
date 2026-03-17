@@ -81,10 +81,7 @@
     showActions = false;
   }
 
-  function handlePointerDown(e: PointerEvent) {
-    // Swipe gesture is touch-only — desktop uses right-click (oncontextmenu)
-    if (e.pointerType === 'mouse') return;
-
+  function handleTouchStart(e: TouchEvent) {
     // Always reset gesture state, even if we bail early
     isSwipeGesture = false;
 
@@ -95,15 +92,15 @@
       return;
     }
 
-    touchStartX = e.clientX;
-    touchStartY = e.clientY;
-    // Capture pointer so pointermove fires even when finger leaves the element
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
   }
 
-  function handlePointerMove(e: PointerEvent) {
-    const deltaX = e.clientX - touchStartX;
-    const deltaY = e.clientY - touchStartY;
+  function handleTouchMove(e: TouchEvent) {
+    const t = e.touches[0];
+    const deltaX = t.clientX - touchStartX;
+    const deltaY = t.clientY - touchStartY;
 
     // Left swipe from unlocked state
     if (!isSwipeGesture && !swipeLocked && Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0) {
@@ -127,7 +124,7 @@
     }
   }
 
-  function handlePointerUp() {
+  function handleTouchEnd() {
     if (!isSwipeGesture) return;
     if (swipeLocked) {
       if (swipeOffset > -40) {
@@ -155,9 +152,7 @@
     }
   }
 
-  function handleRowTouchStart(e: PointerEvent) {
-    // Long-press is touch-only — desktop uses right-click (oncontextmenu)
-    if (e.pointerType === 'mouse') return;
+  function handleRowTouchStart() {
     longPressTimer = setTimeout(() => {
       showActions = true;
       longPressTimer = null;
@@ -174,8 +169,8 @@
   // Must be registered with { passive: false } to allow e.preventDefault() during swipe
   $effect(() => {
     if (!rowContentEl) return;
-    rowContentEl.addEventListener('pointermove', handlePointerMove, { passive: false });
-    return () => rowContentEl.removeEventListener('pointermove', handlePointerMove);
+    rowContentEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => rowContentEl.removeEventListener('touchmove', handleTouchMove);
   });
 
   // Reset swipe state when rename input or action sheet opens
@@ -204,8 +199,8 @@
   <div
     role="presentation"
     bind:this={rowContentEl}
-    onpointerdown={handlePointerDown}
-    onpointerup={handlePointerUp}
+    ontouchstart={handleTouchStart}
+    ontouchend={handleTouchEnd}
     onclick={handleContentClick}
     class="bg-gray-950"
     style="transform: translateX({swipeOffset}px); transition: {isSwipeGesture ? 'none' : 'transform 150ms ease'}; {rowBgStyle}"
@@ -215,8 +210,8 @@
   <button
     class="w-full flex items-center gap-3 px-3 py-3 text-left"
     onclick={onExpand}
-    onpointerdown={handleRowTouchStart}
-    onpointerup={cancelLongPress}
+    ontouchstart={handleRowTouchStart}
+    ontouchend={cancelLongPress}
     oncontextmenu={(e) => { e.preventDefault(); handleLongPress(); }}
   >
     <!-- Player name + history -->

@@ -43,12 +43,21 @@
   // Score for the current round
   const currentRoundScore = $derived(scores[currentRound] ?? null);
 
+  // Box-shadow on outer div (clips to rounded corners); background on inner div
   const rowGlowStyle = $derived(
     currentRoundScore === null
       ? ''
       : currentRoundScore > 0
-        ? 'box-shadow: 0 0 0 2px #16a34a, 0 0 12px rgba(22,163,74,0.4); background: #1a2e22'
-        : 'box-shadow: 0 0 0 2px #dc2626, 0 0 12px rgba(220,38,38,0.4); background: #2a1a1a'
+        ? 'box-shadow: 0 0 0 2px #16a34a, 0 0 12px rgba(22,163,74,0.4)'
+        : 'box-shadow: 0 0 0 2px #dc2626, 0 0 12px rgba(220,38,38,0.4)'
+  );
+
+  const rowBgStyle = $derived(
+    currentRoundScore === null
+      ? ''
+      : currentRoundScore > 0
+        ? 'background: #1a2e22'
+        : 'background: #2a1a1a'
   );
 
   function handleLongPress() {
@@ -72,7 +81,7 @@
     showActions = false;
   }
 
-  function handleTouchStart(e: TouchEvent) {
+  function handlePointerDown(e: PointerEvent) {
     // Always reset gesture state, even if we bail early
     isSwipeGesture = false;
 
@@ -83,18 +92,15 @@
       return;
     }
 
-    // Cancel any pending long-press — a swipe gesture is starting
-    cancelLongPress();
-
-    const t = e.touches[0];
-    touchStartX = t.clientX;
-    touchStartY = t.clientY;
+    touchStartX = e.clientX;
+    touchStartY = e.clientY;
+    // Capture pointer so pointermove fires even when cursor/finger leaves the element
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   }
 
-  function handleTouchMove(e: TouchEvent) {
-    const t = e.touches[0];
-    const deltaX = t.clientX - touchStartX;
-    const deltaY = t.clientY - touchStartY;
+  function handlePointerMove(e: PointerEvent) {
+    const deltaX = e.clientX - touchStartX;
+    const deltaY = e.clientY - touchStartY;
 
     // Left swipe from unlocked state
     if (!isSwipeGesture && !swipeLocked && Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0) {
@@ -118,7 +124,7 @@
     }
   }
 
-  function handleTouchEnd() {
+  function handlePointerUp() {
     if (!isSwipeGesture) return;
     if (swipeLocked) {
       if (swipeOffset > -40) {
@@ -163,8 +169,8 @@
   // Must be registered with { passive: false } to allow e.preventDefault() during swipe
   $effect(() => {
     if (!rowContentEl) return;
-    rowContentEl.addEventListener('touchmove', handleTouchMove, { passive: false });
-    return () => rowContentEl.removeEventListener('touchmove', handleTouchMove);
+    rowContentEl.addEventListener('pointermove', handlePointerMove, { passive: false });
+    return () => rowContentEl.removeEventListener('pointermove', handlePointerMove);
   });
 
   // Reset swipe state when rename input or action sheet opens
@@ -189,22 +195,23 @@
     🗑️
   </div>
 
-  <!-- Inner sliding content — role=presentation: structural wrapper, not interactive -->
+  <!-- Inner sliding content — bg-gray-950 prevents red strip showing through -->
   <div
     role="presentation"
     bind:this={rowContentEl}
-    ontouchstart={handleTouchStart}
-    ontouchend={handleTouchEnd}
+    onpointerdown={handlePointerDown}
+    onpointerup={handlePointerUp}
     onclick={handleContentClick}
-    style="transform: translateX({swipeOffset}px); transition: {isSwipeGesture ? 'none' : 'transform 150ms ease'}"
+    class="bg-gray-950"
+    style="transform: translateX({swipeOffset}px); transition: {isSwipeGesture ? 'none' : 'transform 150ms ease'}; {rowBgStyle}"
   >
 
   <!-- Main row (tap to expand) -->
   <button
     class="w-full flex items-center gap-3 px-3 py-3 text-left"
     onclick={onExpand}
-    ontouchstart={handleRowTouchStart}
-    ontouchend={cancelLongPress}
+    onpointerdown={handleRowTouchStart}
+    onpointerup={cancelLongPress}
     oncontextmenu={(e) => { e.preventDefault(); handleLongPress(); }}
   >
     <!-- Player name + history -->

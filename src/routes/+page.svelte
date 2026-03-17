@@ -80,14 +80,24 @@
   <!-- Player list -->
   <main class="flex-1 overflow-y-auto px-4 py-2">
     {#if game.players.length === 0}
-      <div class="text-gray-400 text-sm mt-8 space-y-2">
-        <ul class="list-disc list-inside space-y-1">
-          <li>Add players to get started</li>
-          <li>Tap a player to enter their score each round</li>
-          <li>Use the card calculator to total up your hand</li>
-          <li>Hit <strong class="text-gray-300">End Round</strong> when everyone has scored</li>
-          <li>First to 200+ points wins</li>
+      <div class="text-sm mt-8">
+        <h2 class="text-lg font-semibold text-white mb-4">How to Play</h2>
+        <ul class="text-gray-300 list-disc list-inside space-y-2 mb-5">
+          <li>Add up to 12 players using the input at the bottom</li>
+          <li>Tap a player row to enter their score for the round</li>
+          <li>Use the card calculator 🧮 to total your hand from individual cards</li>
+          <li>Tap <strong class="text-white">Bust</strong> if a player busted this round (score = 0)</li>
+          <li>Hit <strong class="text-white">End Round</strong> when all players have scored</li>
+          <li>First player to reach 200+ cumulative points wins</li>
         </ul>
+        <a
+          href="https://theop.games/pages/flip-7"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          Full Flip 7 rules ↗
+        </a>
       </div>
     {/if}
 

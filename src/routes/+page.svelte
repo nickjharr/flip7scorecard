@@ -15,6 +15,9 @@
   // Show help modal
   let showHelp = $state(false);
 
+  // Show bust warning dialog when some players have no score
+  let showBustWarning = $state(false);
+
   // Winner state — set after endRound detects 200+
   let winners = $state<import('$lib/types').Player[] | null>(null);
 
@@ -26,6 +29,17 @@
   }
 
   function handleEndRound() {
+    if (unscoredPlayers.length > 0) {
+      showBustWarning = true;
+      return;
+    }
+    endRound();
+    const w = getWinners(game);
+    if (w) winners = w;
+  }
+
+  function confirmEndRound() {
+    showBustWarning = false;
     endRound();
     const w = getWinners(game);
     if (w) winners = w;
@@ -45,6 +59,14 @@
         const s = game.scores[p.id];
         return s && s[game.currentRound] !== undefined && s[game.currentRound] !== null;
       })
+  );
+
+  // Players with no score entered for the current round
+  const unscoredPlayers = $derived(
+    game.players.filter((p) => {
+      const s = game.scores[p.id];
+      return !s || s[game.currentRound] === undefined || s[game.currentRound] === null;
+    })
   );
 </script>
 
@@ -168,6 +190,35 @@
           class="flex-1 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-sm font-medium transition-colors"
         >
           New Game
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+<!-- Bust warning dialog -->
+{#if showBustWarning}
+  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-10 px-6">
+    <div class="bg-gray-900 rounded-2xl p-6 w-full max-w-sm text-white">
+      <p class="text-center text-lg font-semibold mb-1">Some players haven't scored</p>
+      <p class="text-center text-sm text-gray-400 mb-3">These players will be marked as bust (0):</p>
+      <ul class="text-center text-sm text-white mb-5 space-y-1">
+        {#each unscoredPlayers as player (player.id)}
+          <li>{player.name}</li>
+        {/each}
+      </ul>
+      <div class="flex gap-3">
+        <button
+          onclick={() => (showBustWarning = false)}
+          class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm font-medium transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          onclick={confirmEndRound}
+          class="flex-1 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-sm font-medium transition-colors"
+        >
+          End Round
         </button>
       </div>
     </div>

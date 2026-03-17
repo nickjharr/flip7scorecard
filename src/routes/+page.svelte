@@ -59,7 +59,7 @@
         aria-label="Help"
         class="text-sm text-gray-400 hover:text-white transition-colors"
       >
-        ?
+        ℹ️
       </button>
       <button
         onclick={() => (showNewGameConfirm = true)}

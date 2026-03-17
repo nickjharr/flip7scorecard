@@ -68,7 +68,7 @@
     onclick={() => (calculatorOpen = true)}
     class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm transition-colors"
   >
-    🃏 Calc
+    🧮 Calc
   </button>
 
   <button

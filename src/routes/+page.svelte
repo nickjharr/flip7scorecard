@@ -47,7 +47,7 @@
 <div class="h-dvh bg-gray-950 text-white flex flex-col max-w-lg mx-auto">
   <!-- Header -->
   <header class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-    <h1 class="text-xl font-bold tracking-tight">Flip 7</h1>
+    <h1 class="text-xl font-bold tracking-tight">Flip 7 Scorecard</h1>
     <button
       onclick={() => (showNewGameConfirm = true)}
       class="text-sm text-gray-400 hover:text-white transition-colors"
@@ -66,12 +66,14 @@
   <!-- Player list -->
   <main class="flex-1 overflow-y-auto px-4 py-2">
     {#if game.players.length === 0}
-      <div class="text-gray-400 text-sm text-center mt-8 space-y-1">
-        <p>Add players below to get started.</p>
-        <p>Tap a player to enter their score each round.</p>
-        <p>Use the card calculator to total up your hand.</p>
-        <p>Hit <strong class="text-gray-300">End Round</strong> when everyone has scored.</p>
-        <p class="text-gray-600 text-xs mt-3 italic">Remember the first rule: <em>always</em> freeze Aleks.</p>
+      <div class="text-gray-400 text-sm mt-8 space-y-2">
+        <ul class="list-disc list-inside space-y-1">
+          <li>Add players to get started</li>
+          <li>Tap a player to enter their score each round</li>
+          <li>Use the card calculator to total up your hand</li>
+          <li>Hit <strong class="text-gray-300">End Round</strong> when everyone has scored</li>
+          <li>First to 200+ points wins</li>
+        </ul>
       </div>
     {/if}
 

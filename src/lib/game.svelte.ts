@@ -102,5 +102,16 @@ export function newGame(): void {
   }
 }
 
+export function playAgain(): void {
+  const freshScores: Record<string, (number | null)[]> = {};
+  for (const player of game.players) {
+    freshScores[player.id] = [];
+  }
+  game.scores = freshScores;
+  game.currentRound = 0;
+  flip7Banner.active = false;
+  persist();
+}
+
 // Re-export derived helpers for convenience in components.
 export { totalScore, getWinners };

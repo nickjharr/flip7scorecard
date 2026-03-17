@@ -1,7 +1,7 @@
 # Design: Unscored Player Warning Dialog
 
 **Date:** 2026-03-17
-**Status:** Approved
+**Status:** Draft
 
 ## Problem
 
@@ -15,7 +15,7 @@ Intercept the End Round action and show a confirmation dialog when one or more p
 
 ### Approach
 
-Option A — inline dialog in `+page.svelte`, consistent with the existing "New Game" confirmation pattern. No new files or components.
+Option A — inline dialog in `src/routes/+page.svelte`, consistent with the existing "New Game" confirmation pattern. No new files or components.
 
 ### Changes (all in `src/routes/+page.svelte`)
 
@@ -29,22 +29,28 @@ let showBustWarning = $state(false);
 const unscoredPlayers = $derived(
   game.players.filter((p) => {
     const s = game.scores[p.id];
-    return !s || s[game.currentRound] === undefined || s[game.currentRound] === null;
+    return s[game.currentRound] === undefined || s[game.currentRound] === null;
   })
 );
 ```
+
+> Note: `game.scores[p.id]` is always initialised to `[]` in `addPlayer`, so `s` is always a defined array. An entry is `null` when `setScore` back-filled a shorter array (explicit null placeholder). An entry is `undefined` when the array has never been extended to that round index. Both must be checked.
 
 **Modified `handleEndRound`:**
 - If `unscoredPlayers.length > 0`, set `showBustWarning = true` and return early
 - Otherwise call `endRound()` and check for winners as today
 
+> Note: `canEndRound` already disables the button when zero players have scored, so `handleEndRound` is only ever called when at least one player has a score. The "all players unscored" case is therefore unreachable here.
+
 **New `confirmEndRound` handler:**
-- Calls `endRound()`
-- Checks for winners
-- Sets `showBustWarning = false`
+1. Set `showBustWarning = false`
+2. Call `endRound()`
+3. Check for winners via `getWinners(game)` and set `winners` if found
+
+Dismissing the dialog before checking for winners ensures it is never visible beneath the winner banner.
 
 **New inline dialog (`{#if showBustWarning}`):**
-- Same visual style as the existing New Game confirm dialog (dark overlay, rounded card)
+- Same visual style as the existing New Game confirm dialog (dark overlay, `z-10`, rounded card)
 - Title: "Some players haven't scored"
 - Body: lists unscored player names; states they will be marked as bust
 - "Cancel" button: sets `showBustWarning = false`
@@ -60,7 +66,9 @@ const unscoredPlayers = $derived(
 
 | Scenario | Result |
 |----------|--------|
+| Zero players have scored | End Round button is disabled — dialog never shown |
 | All players scored | End Round proceeds immediately, no dialog |
-| One or more players unscored | Warning dialog shown with player names |
+| One or more players unscored | Warning dialog shown listing unscored player names |
 | User clicks Cancel | Dialog dismissed, round not ended |
-| User clicks End Round in dialog | Round ends, unscored players get bust (0) |
+| User clicks End Round in dialog | `showBustWarning` cleared, round ends, unscored players get bust (0) |
+| Round end via dialog causes a winner | Dialog dismissed first, then winner banner (z-20) appears on top |

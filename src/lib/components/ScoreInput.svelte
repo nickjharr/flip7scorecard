@@ -56,6 +56,7 @@
     type="number"
     inputmode="numeric"
     min="0"
+    aria-label="Score"
     placeholder="Score"
     bind:value={inputValue}
     onfocus={(e) => (e.target as HTMLInputElement).select()}

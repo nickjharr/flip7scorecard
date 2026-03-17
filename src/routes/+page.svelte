@@ -98,6 +98,7 @@
       >
         <input
           type="text"
+          aria-label="Player name"
           placeholder="Player name"
           bind:value={newPlayerName}
           maxlength={20}

@@ -102,9 +102,9 @@
       {/if}
     </div>
 
-    <!-- Current round pending indicator -->
-    <span class="text-xs text-gray-400 w-5 text-center">
-      {currentRoundScore !== null ? '' : '--'}
+    <!-- Current round score (blue when saved, -- when pending) -->
+    <span class="text-sm tabular-nums w-10 text-center {currentRoundScore !== null ? 'text-blue-400 font-semibold' : 'text-gray-400'}">
+      {currentRoundScore !== null ? currentRoundScore : '--'}
     </span>
 
     <!-- Cumulative total -->

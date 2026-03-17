@@ -36,6 +36,10 @@ export function playAgain(): void {
 
 This rebuilds `game.scores` with an empty array per existing player, resets `currentRound` to 0, and clears the Flip 7 banner. `game.players` is not touched.
 
+Note: `playAgain()` calls `persist()` rather than `localStorage.removeItem()` (as `newGame()` does). This is intentional — the goal is to save the reset state with the player list intact, not discard it.
+
+Note: the winner banner's visibility is controlled by the `winners` local state variable in `+page.svelte`, not by anything in the store. `playAgain()` does not need to touch `winners` — that is handled in `handlePlayAgain()` in `+page.svelte`.
+
 ### Changes to `src/routes/+page.svelte`
 
 1. **Import `playAgain`** from `$lib/game.svelte`.
@@ -46,9 +50,12 @@ This rebuilds `game.scores` with an empty array per existing player, resets `cur
 function handlePlayAgain() {
   playAgain();
   winners = null;
+  showNewGameConfirm = false;
   expandedPlayerId = null;
 }
 ```
+
+`winners = null` dismisses the winner banner. `showNewGameConfirm = false` is included defensively for consistency with `handleNewGame()`, even though both dialogs cannot be simultaneously visible in practice.
 
 3. **Update the winner banner button:**
 
@@ -67,3 +74,4 @@ Change the button label from "New Game" to "Play Again" and wire `onclick` to `h
 | Game ends, user clicks "Play Again" | Scores and round reset to 0; players kept; winner banner dismissed |
 | Header "New Game" clicked at any time | All players, scores, and round wiped (existing behaviour unchanged) |
 | localStorage after Play Again | Persisted state reflects reset scores and round with players intact |
+| `playAgain()` called with no players | No-op for scores loop; round resets to 0; safe — call site guarantees players exist |

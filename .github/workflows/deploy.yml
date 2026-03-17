@@ -26,8 +26,6 @@ jobs:
       - run: npm ci
 
       - run: npm run build
-        env:
-          BASE_PATH: /flip7scorecard
 
       - uses: actions/configure-pages@v5
 

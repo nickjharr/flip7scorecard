@@ -1,6 +1,7 @@
 <script lang="ts">
   import { game, addPlayer, endRound, newGame, getWinners, totalScore, flip7Banner } from '$lib/game.svelte';
   import PlayerRow from '$lib/components/PlayerRow.svelte';
+  import HelpModal from '$lib/components/HelpModal.svelte';
 
   // Which player row is currently expanded (null = none)
   let expandedPlayerId = $state<string | null>(null);
@@ -10,6 +11,9 @@
 
   // Show new game confirmation
   let showNewGameConfirm = $state(false);
+
+  // Show help modal
+  let showHelp = $state(false);
 
   // Winner state — set after endRound detects 200+
   let winners = $state<import('$lib/types').Player[] | null>(null);
@@ -48,12 +52,22 @@
   <!-- Header -->
   <header class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
     <h1 class="text-xl font-bold tracking-tight">Flip 7 Scorecard</h1>
-    <button
-      onclick={() => (showNewGameConfirm = true)}
-      class="text-sm text-gray-400 hover:text-white transition-colors"
-    >
-      New Game
-    </button>
+    <div class="flex gap-3">
+      <button
+        type="button"
+        onclick={() => { showHelp = true; expandedPlayerId = null; }}
+        aria-label="Help"
+        class="text-sm text-gray-400 hover:text-white transition-colors"
+      >
+        ?
+      </button>
+      <button
+        onclick={() => (showNewGameConfirm = true)}
+        class="text-sm text-gray-400 hover:text-white transition-colors"
+      >
+        New Game
+      </button>
+    </div>
   </header>
 
   <!-- Flip 7 banner -->
@@ -148,6 +162,10 @@
       </div>
     </div>
   </div>
+{/if}
+
+{#if showHelp}
+  <HelpModal onDismiss={() => (showHelp = false)} />
 {/if}
 
 <!-- Winner banner -->

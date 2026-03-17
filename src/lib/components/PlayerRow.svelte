@@ -82,6 +82,9 @@
   }
 
   function handlePointerDown(e: PointerEvent) {
+    // Swipe gesture is touch-only — desktop uses right-click (oncontextmenu)
+    if (e.pointerType === 'mouse') return;
+
     // Always reset gesture state, even if we bail early
     isSwipeGesture = false;
 
@@ -94,7 +97,7 @@
 
     touchStartX = e.clientX;
     touchStartY = e.clientY;
-    // Capture pointer so pointermove fires even when cursor/finger leaves the element
+    // Capture pointer so pointermove fires even when finger leaves the element
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   }
 
@@ -152,7 +155,9 @@
     }
   }
 
-  function handleRowTouchStart() {
+  function handleRowTouchStart(e: PointerEvent) {
+    // Long-press is touch-only — desktop uses right-click (oncontextmenu)
+    if (e.pointerType === 'mouse') return;
     longPressTimer = setTimeout(() => {
       showActions = true;
       longPressTimer = null;

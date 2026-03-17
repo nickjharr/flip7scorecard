@@ -102,8 +102,8 @@
       {/if}
     </div>
 
-    <!-- Current round score (blue when saved, -- when pending) -->
-    <span class="text-sm tabular-nums w-10 text-center {currentRoundScore !== null ? 'text-blue-400 font-semibold' : 'text-gray-400'}">
+    <!-- Current round score (red for bust, blue when saved, -- when pending) -->
+    <span class="text-sm tabular-nums w-10 text-center {currentRoundScore === null ? 'text-gray-400' : currentRoundScore === 0 ? 'text-red-400 font-semibold' : 'text-blue-400 font-semibold'}">
       {currentRoundScore !== null ? currentRoundScore : '--'}
     </span>
 

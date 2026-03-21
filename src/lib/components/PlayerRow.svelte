@@ -202,8 +202,8 @@
     ontouchstart={handleTouchStart}
     ontouchend={handleTouchEnd}
     onclick={handleContentClick}
-    class="bg-gray-950"
-    style="transform: translateX({swipeOffset}px); transition: {isSwipeGesture ? 'none' : 'transform 150ms ease'}; {rowBgStyle}"
+    class="relative bg-gray-950"
+    style="{swipeOffset !== 0 ? `transform: translateX(${swipeOffset}px);` : ''} transition: {isSwipeGesture ? 'none' : 'transform 150ms ease'}; {rowBgStyle}"
   >
 
   <!-- Main row (tap to expand) -->

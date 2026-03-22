@@ -249,10 +249,10 @@
         {winners[0] ? totalScore(game.scores, winners[0].id) : 0} points
       </p>
       <button
-        onclick={handlePlayAgain}
+        onclick={() => (winners = null)}
         class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold transition-colors"
       >
-        Play Again
+        Ok
       </button>
     </div>
   </div>

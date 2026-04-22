@@ -36,14 +36,18 @@ export function createEmptyGame(): GameState {
 
 /**
  * Calculates the score for a hand of Flip 7 cards.
- * X2 multiplier applies only to the number card total, not modifiers.
+ * x2 applies only to the number card total, not modifiers.
+ * div2 halves the number card total (floor), not modifiers.
  */
 export function calcCardTotal(
-  numbers: number[],   // selected number card values (0–12)
-  modifiers: number[], // selected modifier card values (+2/+4/+6/+8/+10)
-  x2: boolean          // whether the X2 multiplier card is held
+  numbers: number[],
+  modifiers: number[],
+  multiplier: 'x2' | 'div2' | null
 ): number {
   const numSum = numbers.reduce((a, b) => a + b, 0);
   const modSum = modifiers.reduce((a, b) => a + b, 0);
-  return numSum * (x2 ? 2 : 1) + modSum;
+  let result = numSum;
+  if (multiplier === 'x2') result *= 2;
+  else if (multiplier === 'div2') result = Math.floor(result / 2);
+  return result + modSum;
 }

@@ -200,7 +200,7 @@
         <button
           type="button"
           onclick={() => toggleNumber(13)}
-          disabled={isFlip7 && c === 0}
+          disabled={isFlip7 && c < 2}
           class="relative rounded-full px-3 py-1.5 text-sm font-medium border transition-colors disabled:opacity-30 disabled:cursor-not-allowed
             {c > 0
               ? 'bg-amber-400 text-gray-900 border-amber-400'

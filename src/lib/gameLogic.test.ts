@@ -125,26 +125,50 @@ describe('Flip 7 constants', () => {
 
 describe('calcCardTotal', () => {
   it('returns 0 when nothing is selected', () => {
-    expect(calcCardTotal([], [], false)).toBe(0);
+    expect(calcCardTotal([], [], null)).toBe(0);
   });
 
   it('sums number cards correctly', () => {
-    expect(calcCardTotal([3, 7, 2], [], false)).toBe(12);
+    expect(calcCardTotal([3, 7, 2], [], null)).toBe(12);
   });
 
   it('sums modifier cards correctly', () => {
-    expect(calcCardTotal([], [4, 6], false)).toBe(10);
+    expect(calcCardTotal([], [4, 6], null)).toBe(10);
   });
 
-  it('applies X2 to number total only, not modifiers', () => {
-    expect(calcCardTotal([5], [4], true)).toBe(14); // (5 × 2) + 4
+  it('applies x2 to number total only, not modifiers', () => {
+    expect(calcCardTotal([5], [4], 'x2')).toBe(14); // (5 × 2) + 4
   });
 
-  it('X2 with no number cards returns only modifier sum', () => {
-    expect(calcCardTotal([], [8], true)).toBe(8); // (0 × 2) + 8 = 8
+  it('x2 with no number cards returns only modifier sum', () => {
+    expect(calcCardTotal([], [8], 'x2')).toBe(8); // (0 × 2) + 8
   });
 
-  it('combines numbers, X2, and modifiers correctly', () => {
-    expect(calcCardTotal([3, 7], [2, 4], true)).toBe(26); // (10 × 2) + 6
+  it('combines numbers, x2, and modifiers correctly', () => {
+    expect(calcCardTotal([3, 7], [2, 4], 'x2')).toBe(26); // (10 × 2) + 6
+  });
+
+  it('div2 halves number sum (floor) and then adds modifiers', () => {
+    expect(calcCardTotal([7], [], 'div2')).toBe(3); // floor(7 / 2)
+  });
+
+  it('div2 floors odd results', () => {
+    expect(calcCardTotal([5, 4], [], 'div2')).toBe(4); // floor(9 / 2)
+  });
+
+  it('div2 with no number cards returns only modifier sum', () => {
+    expect(calcCardTotal([], [-4], 'div2')).toBe(-4); // floor(0 / 2) + (-4)
+  });
+
+  it('negative modifiers reduce total', () => {
+    expect(calcCardTotal([8], [-2, -4], null)).toBe(2); // 8 + (-6)
+  });
+
+  it('negative modifiers can produce a total below zero', () => {
+    expect(calcCardTotal([2], [-10], null)).toBe(-8); // 2 + (-10)
+  });
+
+  it('two 13s sum correctly', () => {
+    expect(calcCardTotal([13, 13], [], null)).toBe(26);
   });
 });

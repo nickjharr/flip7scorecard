@@ -12,7 +12,8 @@ A mobile-first web app for tracking scores in the card game [Flip 7](https://www
 - Enter round scores in any order; edit them before ending the round
 - One-tap **Bust** button (scores 0 for the round)
 - **Card Calculator** — tap your cards to compute the round total automatically; slides up from the bottom
-- **Flip 7 detection** — selecting all 7 number cards adds the +15 bonus, locks further number card selection, and shows a round-end reminder banner to other players
+- **Flip 7 With a Vengeance mode** — toggle in the calculator to switch the full card set: negative modifiers (−2 to −10), ÷2 multiplier, and Lucky 13 (selectable twice). Mode persists until untoggled.
+- **Flip 7 detection** — selecting all 7 different number cards adds the +15 bonus, locks further number card selection, and shows a round-end reminder banner to other players
 - Cumulative scores always visible; round history per player aligned by round and capped at the last 9
 - Winner banner when a player reaches 200+
 - Scores survive page refreshes via `localStorage`
@@ -24,9 +25,19 @@ A mobile-first web app for tracking scores in the card game [Flip 7](https://www
 | Number cards | Sum of all number cards (0–12) |
 | ×2 modifier | Doubles the number card total if held |
 | Flat bonuses | +2 / +4 / +6 / +8 / +10 added after multiplier |
-| Flip 7 | Select all 7 number cards → +15 bonus, your turn ends |
+| Flip 7 | Select all 7 different number cards → +15 bonus, your turn ends |
 | Bust | Round score = 0 |
 | Win | First player to **200+ cumulative points** |
+
+### Flip 7 With a Vengeance — card set differences
+
+| Element | Vengeance rule |
+|---------|----------------|
+| Number cards | 0–13; Lucky 13 may be held twice (counts as one unique card) |
+| ÷2 modifier | Halves the number card total (floor) |
+| Flat penalties | −2 / −4 / −6 / −8 / −10 applied after multiplier |
+| Negative total | Floors to 0 when saved |
+| Win condition | Unchanged — first to 200+ |
 
 ---
 

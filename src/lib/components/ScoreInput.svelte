@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Player } from '$lib/types';
-  import { setScore, setFlip7Banner } from '$lib/game.svelte';
+  import { setScore, setFlip7Banner, vengeanceMode } from '$lib/game.svelte';
   import CardCalculator from './CardCalculator.svelte';
   import { untrack } from 'svelte';
 
@@ -90,13 +90,14 @@
 {#if calculatorOpen}
   <CardCalculator
     onApply={(total, isFlip7) => {
-      inputValue = String(total);
+      const saved = vengeanceMode.active ? Math.max(0, total) : total;
+      inputValue = String(saved);
       calculatorOpen = false;
       if (isFlip7) {
-        pendingFlip7Score = total;
+        pendingFlip7Score = saved;
         showFlip7Confirm = true;
       } else {
-        commitSave(total);
+        commitSave(saved);
       }
     }}
     onBust={() => {

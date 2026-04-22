@@ -61,9 +61,9 @@
   const isFlip7 = $derived(new Set(selectedNumbers).size === FLIP_7_CARD_COUNT);
 
   // --- Multiplier for calcCardTotal ---
-  const multiplier = $derived(
+  const multiplier: 'x2' | 'div2' | null = $derived(
     multiplierSelected ? (vengeanceMode.active ? 'div2' : 'x2') : null
-  ) as 'x2' | 'div2' | null;
+  );
 
   // --- Derived total ---
   const total = $derived(
@@ -160,6 +160,7 @@
         <button
           type="button"
           onclick={() => switchMode(false)}
+          aria-pressed={!vengeanceMode.active}
           class="px-3 py-1.5 transition-colors {!vengeanceMode.active ? 'bg-amber-400 text-gray-900' : 'bg-transparent text-gray-400 hover:text-gray-200'}"
         >
           Base
@@ -167,6 +168,7 @@
         <button
           type="button"
           onclick={() => switchMode(true)}
+          aria-pressed={vengeanceMode.active}
           class="px-3 py-1.5 transition-colors {vengeanceMode.active ? 'bg-red-500 text-white' : 'bg-transparent text-gray-400 hover:text-gray-200'}"
         >
           Vengeance

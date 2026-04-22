@@ -3,6 +3,17 @@ import { createEmptyGame, totalScore, getWinners } from './gameLogic';
 import type { GameState } from './types';
 
 const STORAGE_KEY = 'flip7_game';
+const VENGEANCE_KEY = 'flip7_vengeance';
+
+function loadVengeanceMode(): boolean {
+  if (!browser) return false;
+  try {
+    const raw = localStorage.getItem(VENGEANCE_KEY);
+    return raw ? (JSON.parse(raw) as boolean) : false;
+  } catch {
+    return false;
+  }
+}
 
 // Load from localStorage on startup, or start fresh.
 function loadInitialState(): GameState {
@@ -29,6 +40,13 @@ function loadInitialState(): GameState {
 
 // The reactive game state — Svelte 5 tracks mutations automatically.
 export const game = $state<GameState>(loadInitialState());
+
+export const vengeanceMode = $state({ active: loadVengeanceMode() });
+
+export function setVengeanceMode(val: boolean): void {
+  vengeanceMode.active = val;
+  if (browser) localStorage.setItem(VENGEANCE_KEY, JSON.stringify(val));
+}
 
 // Write current state to localStorage.
 function persist() {
